@@ -1,0 +1,14 @@
+/* components/TopBar.css */
+.navbar {
+    background-color: #333333;
+    border-bottom: 2px solid #FFFFFF;
+  }
+  
+  .navbar-brand, .nav-link {
+    color: #fff !important;
+  }
+  
+  .navbar-brand:hover, .nav-link:hover {
+    color: #ccc !important;
+  }
+  

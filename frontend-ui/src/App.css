@@ -1,38 +1,34 @@
-.App {
-  text-align: center;
+/* App.css */
+.app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Make sure it's behind other components */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.top-bar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2; /* Above the background */
+  background: rgba(0, 0, 0, 0.7); /* Example style */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.container {
+  position: absolute;
+  top: 50px; /* Adjust based on top bar height */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 50px); /* Adjust based on top bar height */
+  z-index: 3; /* Above both background and top bar */
+  background: rgba(255, 255, 255, 0.8); /* Example style */
 }

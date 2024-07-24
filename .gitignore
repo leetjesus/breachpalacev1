@@ -12,6 +12,44 @@ db.sqlite3-journal
 media
 settings.py
 
+### react ###
+.DS_*
+.DS_Store
+Thumbs.db
+*.log
+logs
+**/*.backup.*
+**/*.back.*
+*.tmp
+*.sublime*
+.cache/
+psd
+thumb
+sketch
+coverage/
+
+# Node modules
+node_modules/
+bower_components
+
+# Build output
+build/
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-error.log*
+
+# IDE configuration
+.idea/
+.vscode/
+
+
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
 # <django-project-name>/staticfiles/
