@@ -1,14 +1,15 @@
 import React from 'react';
-import TopBar from './components/topbar';
-import Container from './components/container';
-import Background from './components/background';
+import HomePage from './components/HomePage';
+import ContactPage from './components/contactPage';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
     <div>
-      <TopBar />
-      <Container />
-      <Background />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/contact" element={<ContactPage />} />
+      </Routes>
     </div>
   );
 }
