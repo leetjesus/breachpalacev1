@@ -15,7 +15,8 @@ const ForceGraphComponent = () => {
   const [nodeData, setNodeData] = useState({});
 
   const distance = 120;
-  const email_name = 'vito@protonmail.com';
+  // change this base on page load
+  const email_name = 'jesus@gmail.com';
   
   // Change this end-point
   useEffect(() => {
