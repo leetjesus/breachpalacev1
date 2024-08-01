@@ -1,11 +1,12 @@
-// components/Background.js
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ForceGraph3D from '3d-force-graph';
-import './background.css'; // Import specific CSS for Background
+import './background.css'; 
 
 const Background = () => {
+  const graphRef = useRef(null);
+  const graphInstance = useRef(null);
+
   useEffect(() => {
-    // Random tree data
     const N = 300;
     const gData = {
       nodes: [...Array(N).keys()].map(i => ({ id: i })),
@@ -18,9 +19,9 @@ const Background = () => {
     };
     const distance = 1400;
 
-    let isRotationActive = true;
-    const Graph = ForceGraph3D()
-      (document.getElementById('3d-graph'))
+    const container = graphRef.current;
+    graphInstance.current = ForceGraph3D()
+      (container)
       .enableNodeDrag(false)
       .enableNavigationControls(false)
       .showNavInfo(false)
@@ -33,23 +34,35 @@ const Background = () => {
     // Camera orbit
     let angle = 0;
     const interval = setInterval(() => {
-      if (isRotationActive) {
-        Graph.cameraPosition({
-          x: distance * Math.sin(angle),
-          z: distance * Math.cos(angle)
-        });
-        angle += Math.PI / 300;
-      }
+      graphInstance.current.cameraPosition({
+        x: distance * Math.sin(angle),
+        z: distance * Math.cos(angle)
+      });
+      angle += Math.PI / 300;
     }, 10);
+
+    // Handle window resize
+    const handleResize = () => {
+      if (container) {
+        const { clientWidth, clientHeight } = container;
+        graphInstance.current.width(clientWidth);
+        graphInstance.current.height(clientHeight);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial call to set the size based on the current window size
 
     // Cleanup on unmount
     return () => {
       clearInterval(interval);
+      window.removeEventListener('resize', handleResize);
+      graphInstance.current = null; // Clear the reference
     };
   }, []);
 
   return (
-    <div id="3d-graph"></div>
+    <div id="3d-graph" ref={graphRef} style={{ width: '100vw', height: '100vh' }}></div>
   );
 };
 
