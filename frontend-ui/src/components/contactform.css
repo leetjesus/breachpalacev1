@@ -48,6 +48,10 @@
 .contact-container .form-group label {
   color: #FFFFFF;
 }
+.contact-container .form-group ::placeholder{
+  color: rgba(255, 255, 255, 0.577);
+  opacity: 1; /* Firefox */
+}
 
 .contact-container .form-group textarea {
   background-color: #444444;
