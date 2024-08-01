@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import './contactform.css'; // Assuming you will use an external CSS file
+import DocumentTitle from './DocumentTitle';
 
 const ContactForm = () => {
+  DocumentTitle("Contact BreachPalace")
   const [charCount, setCharCount] = useState(0);
   
   const handleChange = (event) => {
