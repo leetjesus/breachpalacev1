@@ -3,11 +3,11 @@ import axios from 'axios';
 import * as THREE from 'three';
 import SpriteText from 'three-spritetext';
 import ForceGraph3D from '3d-force-graph';
-import './interactive.css'; 
+import './interactive.css';
 
 // Import images
-import leakImage from '../assets/leak.png';
-import atSignImage from '../assets/at-sign.png'; 
+import leakImage from '../assets/breach.png';
+import atSignImage from '../assets/email.png';
 
 const ForceGraphComponent = () => {
   const containerRef = useRef(null);
@@ -15,10 +15,8 @@ const ForceGraphComponent = () => {
   const [nodeData, setNodeData] = useState({});
 
   const distance = 120;
-  // change this base on page load
-  const email_name = 'jesus@gmail.com';
-  
-  // Change this end-point
+  const email_name = 'Node1';
+
   useEffect(() => {
     axios.get('http://127.0.0.1:5000/dataread')
       .then(response => {
@@ -34,7 +32,7 @@ const ForceGraphComponent = () => {
       .graphData(data)
       .linkColor(() => 'white')
       .nodeColor(() => 'white')
-      .backgroundColor('#000000')
+      .backgroundColor('#272727')
       .enableNodeDrag(false)
       .enableNavigationControls(true)
       .cameraPosition({ z: distance })
@@ -62,11 +60,9 @@ const ForceGraphComponent = () => {
           3000,
         );
       })
-      
       .onBackgroundClick(() => {
         setInfoBoxVisible(false);
       })
-
       .nodeThreeObject(node => {
         const textureLoader = new THREE.TextureLoader();
         const imageSprite = new THREE.Sprite();
@@ -91,6 +87,22 @@ const ForceGraphComponent = () => {
 
         return group;
       });
+
+    const handleResize = () => {
+      if (containerRef.current) {
+        const { clientWidth, clientHeight } = containerRef.current;
+        Graph.width(clientWidth);
+        Graph.height(clientHeight);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial call to set the size based on the current window size
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   };
 
   return (
