@@ -1,0 +1,15 @@
+{
+  "nodes": [
+    { "id": "Node1", "name": "Node 1", "type": "Type A", "data": "Data 1" },
+    { "id": "2", "name": "Node 2", "type": "Type B", "data": "Data 2" },
+    { "id": "3", "name": "Node 3", "type": "Type C", "data": "Data 3" },
+    { "id": "4", "name": "Node 4", "type": "Type A", "data": "Data 4" }
+  ],
+  "links": [
+    { "source": "Node1", "target": "Node1" },
+    { "source": "2", "target": "Node1" },
+    { "source": "3", "target": "Node1" },
+    { "source": "4", "target": "Node1" }
+  ]
+}
+
