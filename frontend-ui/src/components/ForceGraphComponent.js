@@ -6,8 +6,8 @@ import ForceGraph3D from '3d-force-graph';
 import './interactive.css';
 
 // Import images
-import leakImage from '../assets/breach.png';
-import atSignImage from '../assets/email.png';
+import BreachImage from '../assets/breach.png';
+import EmailImage from '../assets/email.png';
 
 const ForceGraphComponent = () => {
   const containerRef = useRef(null);
@@ -68,7 +68,7 @@ const ForceGraphComponent = () => {
         const imageSprite = new THREE.Sprite();
 
         // Determine which image to load based on the node id
-        const imageToLoad = node.id === email_name ? atSignImage : leakImage;
+        const imageToLoad = node.id === email_name ? EmailImage : BreachImage;
 
         textureLoader.load(imageToLoad, (texture) => {
           imageSprite.material = new THREE.SpriteMaterial({ map: texture });
