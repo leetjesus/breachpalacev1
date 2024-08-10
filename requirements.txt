@@ -1,1 +1,3 @@
 django-environ
+djangorestframework
+psycopg2
