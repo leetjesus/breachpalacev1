@@ -23,3 +23,15 @@ class emailList(models.Model):
 
     def __str__(self):
         return self.email
+
+class contactForm(models.Model):
+    name = models.CharField(max_length=15)
+    email = models.EmailField(max_length=254)
+    description = models.TextField(max_length=1000)
+
+    class meta:
+        verbose_name_plural = 'contactform'
+        verbose_name = 'contactform'
+
+    def __str__(self):
+        return self.email
