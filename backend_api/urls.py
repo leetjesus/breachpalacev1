@@ -5,5 +5,5 @@ from . import views
 # "Ohhhh that is sick!" left off here
 urlpatterns = [
     path('api/', views.search_email),
-    path('api/contact/', views.home_page_view)
+    path('api/contact/', views.contact_form)
 ]
