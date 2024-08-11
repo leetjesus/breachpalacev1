@@ -3,7 +3,6 @@ import './contactform.css'; // Assuming you will use an external CSS file
 import DocumentTitle from './DocumentTitle'; // Ensure this is a valid import
 import axios from "axios";
 import { Button } from "react-bootstrap";
-import Alert from 'react-bootstrap/Alert';
 
 const ContactForm = () => {
   DocumentTitle("Contact BreachPalace");
@@ -46,11 +45,21 @@ const ContactForm = () => {
         'Content-Type': 'application/json'
       }
     })
+    
     .then(response => {
-      console.log('Response:', response.data);
+      // Add alert message here to run...
+      if (response.status===200){
+        console.log('Response:', response.data);
+        alert('Succesfully submitted data to server!')
+        window.location.reload();
+      }
     })
+
     .catch(error => {
-      console.error('Error:', error);
+      if (error.response.status === 302) {
+        alert('Email was already added once!');
+        window.location.reload();
+      }
     });
   };
 
