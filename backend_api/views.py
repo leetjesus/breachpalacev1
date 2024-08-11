@@ -23,13 +23,19 @@ def contact_form(request):
         message = data.get('message')
         
         # Print data terminal
-        print(f"Name: {name}")
-        print(f"Email: {email}")
-        print(f"Message: {message}")
+        # print(f"Name: {name}")
+        # print(f"Email: {email}")
+        # print(f"Message: {message}")
         
-        # Uing querysets to save data into db/table
-        obj = contactForm(name=name, email=email, description=message)
-        obj.save()
+        verify_email = contactForm.objects.filter(email=email).exists()
 
-        return HttpResponse('POST request received!')
+        if verify_email == True:
+            # Return 302 if data already exist in table
+            return HttpResponse(status=302)
+        elif verify_email == False:
+            # Save new form data into table
+            obj = contactForm(name=name, email=email, description=message)
+            obj.save()
+            return HttpResponse(status=200)
+
     return HttpResponse('Only POST requests are allowed.')
