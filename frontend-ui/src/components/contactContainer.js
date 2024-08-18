@@ -1,28 +1,43 @@
-import React, { useState } from 'react';
-import './contactform.css'; // Assuming you will use an external CSS file
-import DocumentTitle from './DocumentTitle'; // Ensure this is a valid import
+import React, { useRef, useState } from 'react';
+import './contactform.css'; 
+import DocumentTitle from './DocumentTitle';
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import Alert from '@mui/material/Alert';
-
+import ReCAPTCHA from "react-google-recaptcha";
 
 const ContactForm = () => {
   DocumentTitle("Contact BreachPalace");
-
+  
+  // Have button disabled until the user completes the captcha
+  const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
+ 
+  const captchaRef = useRef(null);
   const [charCount, setCharCount] = useState(0);
-  // will not display alert messages until set to true.
-  const [showSuccess, setshowSuccess] = useState(false);
+
+  // Will not display alert messages until set to true
+  const [showSuccess, setShowSuccess] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   
   const handleChange = (event) => {
     setCharCount(event.target.value.length);
   };
 
-  function clearFields(){
-    // Clear's contact input fields to none after submit
-    document.getElementById('name').value='';
-    document.getElementById('email').value='';
-    document.getElementById('message').value='';
+  function clearFields() {
+    // Clears contact input fields after submit
+    document.getElementById('name').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('message').value = '';
+    // Disable button
+    setIsCaptchaSuccess(false);
+    // refresh page after 1 second
+    setTimeout(() => {
+      window.location.reload(false);
+    }, 1000);
+  }
+
+  function oncapChange() {
+    setIsCaptchaSuccess(true);  // Update captcha state
   }
 
   function getCookie(name) {
@@ -43,11 +58,9 @@ const ContactForm = () => {
 
   const handleContact = (event) => {
     event.preventDefault(); // Prevent default form submission
-
     const csrftoken = getCookie('csrftoken'); // Get CSRF token from cookies
 
     axios.post('/api/contact/', {
-      // Collect form data here if needed.... Convert into json?
       name: document.getElementById('name').value,
       email: document.getElementById('email').value,
       message: document.getElementById('message').value
@@ -59,10 +72,10 @@ const ContactForm = () => {
     })
     
     .then(response => {
-      if (response.status===200) {
+      if (response.status === 200) {
         clearFields();
-        setshowSuccess(true);
-        setTimeout(() => setshowSuccess(false), 5000);
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 5000);
       }
     })
 
@@ -111,7 +124,13 @@ const ContactForm = () => {
             <span>{charCount}</span>/1000
           </div>
         </div>
-        <Button type="submit" variant="light">Send Message</Button>
+        <ReCAPTCHA
+          sitekey={process.env.REACT_APP_SITE_KEY}
+          ref={captchaRef}
+          onChange={oncapChange}
+        />
+        <br/>
+        <Button type="submit" variant="light" disabled={!isCaptchaSuccessful}>Send Message</Button>
       </form>
     </div>
   );
