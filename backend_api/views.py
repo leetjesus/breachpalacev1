@@ -1,15 +1,23 @@
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import leakdata
 from .models import contactForm
 import json
 
 def email_search(request, name):
-    print(request.method)
+    # Verifies if the email exists in the database
     if request.method == 'GET':
-        return HttpResponse(name)
+        verify_email = leakdata.objects.filter(email=name).exists()
+        
+        if verify_email == True: 
+            return JsonResponse({'message': 'email found, redirecting to /result/ end-point'}, status=200)
+        else:
+            return JsonResponse({'message': 'email not found!'}, status=404)
 
+ 
+    return JsonResponse({'message': 'Method not allowed'}, status=405)
+    
 @csrf_protect
 def contact_form(request):
     # Things to-do
