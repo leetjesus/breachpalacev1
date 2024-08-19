@@ -7,12 +7,17 @@ import { getCookie } from './getCookie.js';
 const Container = () => {
   function onChange(){
     const csrftoken = getCookie('csrftoken');
-    axios.get('/api/search/', {
+    
+    const email_text = document.getElementById('email').value;
+    const url = '/api/email/' + email_text;
+
+    axios.get(url, {
       headers: {
         'X-CSRFToken': csrftoken,
         'Content-Type': 'application/json'
       }
-    })
+    }
+  )
     .then(response => {
       if (response.status===200){
         alert(response.data)
@@ -24,11 +29,12 @@ const Container = () => {
       }
     })
   }
+
   return (
     <div className="container">
       <h1>Welcome to Breach Palace</h1>
       <div className="input-group">
-        <input type="text" placeholder="Email address..." />
+        <input id='email' type="text" placeholder="Email address..." />
         <form onSubmit={onChange}>
           <button type="submit">Search</button>
         </form>
