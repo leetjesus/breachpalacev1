@@ -3,31 +3,38 @@ import React from 'react';
 import './container.css'; // Import specific CSS for Container
 import axios from "axios";
 import { getCookie } from './getCookie.js';
+import { useNavigate } from 'react-router-dom';
+
 
 const Container = () => {
-  function onChange(){
-    const csrftoken = getCookie('csrftoken');
+  const navigate = useNavigate();
+
+  function onChange(event) {
+    event.preventDefault(); // Prevents the default form submission (prevent refresh)
     
+    const csrftoken = getCookie('csrftoken');
     const email_text = document.getElementById('email').value;
     const url = '/api/email/' + email_text;
-
+  
     axios.get(url, {
       headers: {
         'X-CSRFToken': csrftoken,
         'Content-Type': 'application/json'
       }
-    }
-  )
+    })
     .then(response => {
-      if (response.status===200){
-        alert(response.data)
+      if (response.status === 200) {
+        
+        navigate('/result'); // redirect to /result
       }
     })
-    .catch(error=> {
-      if (error.response.status === 404) {
-        alert('Not working!')
+    .catch(error => {
+      if (error.response && error.response.status === 404) {
+        alert(error.response.data.message);
+      } else {
+        alert('An unexpected error occurred');
       }
-    })
+    });
   }
 
   return (
