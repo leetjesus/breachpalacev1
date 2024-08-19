@@ -1,20 +1,20 @@
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import leakdata
 from .models import contactForm
 import json
 
-# Create your views here.
-def search_email(request):
-    test = leakdata.objects.all()
-    return HttpResponse(test)
-
-def home_page_view(request):
-    return HttpResponse('Hello world!')
+def email_search(request, name):
+    print(request.method)
+    if request.method == 'GET':
+        return HttpResponse(name)
 
 @csrf_protect
 def contact_form(request):
+    # Things to-do
+    # Prevent spamming based on IP address
+    # 
     if request.method == 'POST':
         data = json.loads(request.body)
         
@@ -38,4 +38,4 @@ def contact_form(request):
             obj.save()
             return HttpResponse(status=200)
 
-    return HttpResponse('Only POST requests are allowed.')
+    return redirect('/contact/')
