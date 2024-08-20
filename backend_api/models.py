@@ -35,3 +35,17 @@ class contactForm(models.Model):
 
     def __str__(self):
         return self.email
+
+class breachInfo(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.TextField()
+    BreachDate = models.CharField(max_length=50)
+    AddedDate = models.CharField(max_length=50)
+    emailCount = models.BigIntegerField()
+
+    class meta:
+        verbose_name = 'breachInfo'
+        verbose_name_plural = 'breachInfo'
+    
+    def __str__(self):
+        return self.name
