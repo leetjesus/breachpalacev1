@@ -1,7 +1,5 @@
+from .models import leakdata, emailList, contactForm, breachInfo
 from django.contrib import admin
-from .models import leakdata
-from .models import emailList
-from .models import contactForm
 
 # Register your models here.
 class leakdataAdmin(admin.ModelAdmin):
@@ -27,6 +25,17 @@ class contactformAdmin(admin.ModelAdmin):
     ]
     displ_list = ('Name', 'Email', 'description')
 
+class breachinfoAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('Name',        {'fields': ['name']}),
+        ('Description', {'fields': ['description']}),
+        ('Breach Date', {'fields': ['BreachDate']}),
+        ('Added Date',  {'fields': ['AddedDate']}),
+        ('Email Count', {'fields': ['emailCount']}),
+
+    ]
+
 admin.site.register(leakdata, leakdataAdmin)
 admin.site.register(emailList, emailListAdmin)
 admin.site.register(contactForm, contactformAdmin)
+admin.site.register(breachInfo, breachinfoAdmin)
