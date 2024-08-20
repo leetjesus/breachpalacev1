@@ -16,9 +16,8 @@ const ForceGraphComponent = () => {
 
   const distance = 120;
   const email_name = 'Node1';
-
   useEffect(() => {
-    axios.get('http://127.0.0.1:5000/dataread')
+    axios.get('/api/result/test')
       .then(response => {
         creatingGraph(response.data);
       })
@@ -44,7 +43,8 @@ const ForceGraphComponent = () => {
           name: node.name,
           id: node.id,
           type: node.type,
-          data: node.data
+          breachdate: node.breachdate,
+          description: node.description
         });
         setInfoBoxVisible(true);
 
@@ -109,10 +109,11 @@ const ForceGraphComponent = () => {
     <div>
       <div id="infoBox" className={infoBoxVisible ? 'visible' : ''}>
         <h2>Data breach Info</h2>
-        <p>Name: {nodeData.name}</p>
-        <p>ID: {nodeData.id}</p>
+        <p>Email: {nodeData.name}</p>
+        {/* <p>ID: {nodeData.id}</p> */}
         <p>Type: {nodeData.type}</p>
-        <p>Data: {nodeData.data}</p>
+        <p>Breach Date: { nodeData.breachdate}</p>
+        <p>Description: { nodeData.description}</p>
       </div>
       <div id="container" ref={containerRef}></div>
     </div>
