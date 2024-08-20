@@ -6,18 +6,46 @@ from .models import contactForm
 import json
 
 def email_search(request, name):
-    # Verifies if the email exists in the database
+    # Verifies if the email exists in the database then redirects to result end point responsbile for outputting the acutal data
     if request.method == 'GET':
         verify_email = leakdata.objects.filter(email=name).exists()
         
-        if verify_email == True: 
+        if verify_email == True:
+            # Will have to redirect to routes but at the same time show the user information for that email..
             return JsonResponse({'message': 'email found, redirecting to /result/ end-point'}, status=200)
         else:
             return JsonResponse({'message': 'email not found!'}, status=404)
 
  
     return JsonResponse({'message': 'Method not allowed'}, status=405)
+
+
+def email_result(request, name):
+    # Return email data
+    lookup_email = leakdata.objects.filter(email=name)
+    print(lookup_email)
+
+    dict1 = {
+        "nodes": [
+            { "id": "leetjesus@gmail.com", "name": "leetjesus@gmail.com", "type": "email"},
+            { "id": "2", "name": "Node2", "type": "Database", "breachdate":"2024-09-12", "description": "Additional info for Node2" },
+            { "id": "3", "name": "Node3", "type": "Database", "breachdate":"2024-09-12", "description": "Additional info for Node3" }
+        ]
+    }
     
+    dict2 = {
+        "links": [
+            { "source": "leetjesus@gmail.com", "target": "leetjesus@gmail.com", "value": 10 },
+            { "source": "2", "target": "leetjesus@gmail.com", "value": 15 },
+            { "source": "3", "target": "leetjesus@gmail.com", "value": 5 },
+        ]
+    }
+    
+    dict1.update(dict2)
+    
+    
+    return JsonResponse(dict1, status=200)
+
 @csrf_protect
 def contact_form(request):
     # Things to-do
@@ -47,3 +75,5 @@ def contact_form(request):
             return HttpResponse(status=200)
 
     return redirect('/contact/')
+
+
