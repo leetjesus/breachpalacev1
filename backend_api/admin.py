@@ -1,18 +1,10 @@
-from .models import leakdata, emailList, contactForm, breachInfo
+from .models import emailList, contactForm, breachInfo, breachExample
 from django.contrib import admin
 
 # Register your models here.
-class leakdataAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None,      {'fields': ['email']}),
-        (None,      {'fields': ['table_name']}),
-        (None,      {'fields': ['data_type']}),
-        (None,      {'fields': ['description']})
-    ]
-    list_display = ('email', 'table_name', 'data_type', 'description')
-
 class emailListAdmin(admin.ModelAdmin):
     fieldsets = [
+        (None, {'fields': ['email_id']}),
         (None, {'fields': ['email']})
     ]
     display_list = ('email')
@@ -27,6 +19,7 @@ class contactformAdmin(admin.ModelAdmin):
 
 class breachinfoAdmin(admin.ModelAdmin):
     fieldsets = [
+        ('breach_id',        {'fields': ['breach_id']}),
         ('Name',        {'fields': ['name']}),
         ('Description', {'fields': ['description']}),
         ('Breach Date', {'fields': ['BreachDate']}),
@@ -35,7 +28,15 @@ class breachinfoAdmin(admin.ModelAdmin):
 
     ]
 
-admin.site.register(leakdata, leakdataAdmin)
+class breachExampleAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('breach_id',        {'fields': ['email_id']}),
+        ('Name',        {'fields': ['email']}),
+        ('Description', {'fields': ['password']}),
+        ('Breach Date', {'fields': ['breach_id']})
+    ]
+
 admin.site.register(emailList, emailListAdmin)
 admin.site.register(contactForm, contactformAdmin)
 admin.site.register(breachInfo, breachinfoAdmin)
+admin.site.register(breachExample, breachExampleAdmin)
