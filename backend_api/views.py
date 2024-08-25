@@ -1,14 +1,14 @@
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
-from .models import leakdata
+from .models import emailList
 from .models import contactForm
 import json
 
 def email_search(request, name):
     # Verifies if the email exists in the database then redirects to result end point responsbile for outputting the acutal data
     if request.method == 'GET':
-        verify_email = leakdata.objects.filter(email=name).exists()
+        verify_email = emailList.objects.filter(email=name).exists()
         
         if verify_email == True:
             # Will have to redirect to routes but at the same time show the user information for that email..
@@ -22,7 +22,7 @@ def email_search(request, name):
 
 def email_result(request, name):
     # Return email data
-    lookup_email = leakdata.objects.filter(email=name)
+    lookup_email = emailList.objects.filter(email=name)
     print(lookup_email)
 
     dict1 = {
