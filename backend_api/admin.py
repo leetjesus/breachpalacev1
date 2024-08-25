@@ -1,5 +1,6 @@
-from .models import emailList, contactForm, breachInfo, breachExample
+from .models import emailList, contactForm, breachInfo
 from django.contrib import admin
+from databreaches.models import breachExample
 
 # Register your models here.
 class emailListAdmin(admin.ModelAdmin):
@@ -28,15 +29,7 @@ class breachinfoAdmin(admin.ModelAdmin):
 
     ]
 
-class breachExampleAdmin(admin.ModelAdmin):
-    fieldsets = [
-        ('breach_id',        {'fields': ['email_id']}),
-        ('Name',        {'fields': ['email']}),
-        ('Description', {'fields': ['password']}),
-        ('Breach Date', {'fields': ['breach_id']})
-    ]
-
 admin.site.register(emailList, emailListAdmin)
 admin.site.register(contactForm, contactformAdmin)
 admin.site.register(breachInfo, breachinfoAdmin)
-admin.site.register(breachExample, breachExampleAdmin)
+admin.site.register(breachExample)
