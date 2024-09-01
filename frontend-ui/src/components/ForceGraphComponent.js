@@ -15,7 +15,7 @@ const ForceGraphComponent = () => {
   const [nodeData, setNodeData] = useState({});
 
   const distance = 120;
-  const email_name = 'Node1';
+  
   useEffect(() => {
     axios.get('/api/result/test')
       .then(response => {
@@ -42,8 +42,7 @@ const ForceGraphComponent = () => {
         setNodeData({
           name: node.name,
           id: node.id,
-          type: node.type,
-          breachdate: node.breachdate,
+          breachdate: node.BreachDate,
           description: node.description
         });
         setInfoBoxVisible(true);
@@ -67,8 +66,8 @@ const ForceGraphComponent = () => {
         const textureLoader = new THREE.TextureLoader();
         const imageSprite = new THREE.Sprite();
 
-        // Determine which image to load based on the node id
-        const imageToLoad = node.id === email_name ? EmailImage : BreachImage;
+        // Determine if it node.id is an email or data breach
+        const imageToLoad = node.id.includes('@') ? EmailImage : BreachImage;
 
         textureLoader.load(imageToLoad, (texture) => {
           imageSprite.material = new THREE.SpriteMaterial({ map: texture });
@@ -107,11 +106,10 @@ const ForceGraphComponent = () => {
 
   return (
     <div>
+      {/* This box needs to change based if it's the email being clicked or the databreach information */}
       <div id="infoBox" className={infoBoxVisible ? 'visible' : ''}>
-        <h2>Data breach Info</h2>
+        <h2>Data Breach Info</h2>
         <p>Email: {nodeData.name}</p>
-        {/* <p>ID: {nodeData.id}</p> */}
-        <p>Type: {nodeData.type}</p>
         <p>Breach Date: { nodeData.breachdate}</p>
         <p>Description: { nodeData.description}</p>
       </div>
