@@ -1,11 +1,9 @@
 from django.urls import path
 from . import views
-from .views import InfoBreach, EmailSearch, email_result
+from .views import InfoBreach, EmailSearch, FormatEmailResult
 
 urlpatterns = [
     path('api/contact/', views.contact_form),
-    path('api/email/<str:name>', views.EmailSearch.as_view(), name='email'),
-    path('api/result/', email_result),
-    # Original views before
-    # path('api/result/<str:name>', views.email_result)
+    path('api/email/<str:email>', views.EmailSearch.as_view(), name='email'),
+    path('api/result/<str:email>', views.FormatEmailResult.as_view(), name='email'),
 ]
