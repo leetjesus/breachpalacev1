@@ -1,56 +1,87 @@
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
-from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_protect
+from django.shortcuts import redirect
 from django.http import HttpResponse, JsonResponse
-from .models import emailList
-from .models import contactForm
+from .models import emailList, contactForm, breachInfo
+from .serializers import BreachInfoSerializer, EmailResultSerializer
+from rest_framework.generics import GenericAPIView
+from databreaches.models import AdobeBreach, SonyBreach
 import json
 
-def email_search(request, name):
-    # Verifies if the email exists in the database then redirects to result end point responsbile for outputting the acutal data
-    if request.method == 'GET':
-        verify_email = emailList.objects.filter(email=name).exists()
+class InfoBreach(GenericAPIView):
+    queryset = breachInfo.objects.all()
+    serializer_class = BreachInfoSerializer
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.get_queryset(), many=True)
+        return HttpResponse(serializer.data)
+
+class EmailSearch(GenericAPIView):
+    serializer_class = EmailResultSerializer
+
+    def get(self, request, *args, **kwargs):
+        name = self.kwargs['email']
         
-        if verify_email == True:
-            # Will have to redirect to routes but at the same time show the user information for that email..
-            return JsonResponse({'message': 'email found, redirecting to /result/ end-point'}, status=200)
+        email_exists = emailList.objects.filter(email=name).exists()
+
+        if email_exists:
+            return JsonResponse({'message': f'Email {name} exists in the database.'})
         else:
-            return JsonResponse({'message': 'email not found!'}, status=404)
+            return JsonResponse({'message': f'Email {name} does not exist in the database.'}, status=404)
 
- 
-    return JsonResponse({'message': 'Method not allowed'}, status=405)
-
-
-def email_result(request, name):
-    # Return email data
-    lookup_email = emailList.objects.filter(email=name)
-    print(lookup_email)
-
-    dict1 = {
-        "nodes": [
-            { "id": "leetjesus@gmail.com", "name": "leetjesus@gmail.com", "type": "email"},
-            { "id": "2", "name": "Node2", "type": "Database", "breachdate":"2024-09-12", "description": "Additional info for Node2" },
-            { "id": "3", "name": "Node3", "type": "Database", "breachdate":"2024-09-12", "description": "Additional info for Node3" }
-        ]
-    }
+class FormatEmailResult(GenericAPIView):
+    def fetch_breachnames(self, email):
+        valid_breach_names = []
+        model_names = ['AdobeBreach', 'SonyBreach']
     
-    dict2 = {
-        "links": [
-            { "source": "leetjesus@gmail.com", "target": "leetjesus@gmail.com", "value": 10 },
-            { "source": "2", "target": "leetjesus@gmail.com", "value": 15 },
-            { "source": "3", "target": "leetjesus@gmail.com", "value": 5 },
-        ]
-    }
-    
-    dict1.update(dict2)
-    
-    
-    return JsonResponse(dict1, status=200)
+        for model_name in model_names:
+            # Since the models are already imported, use the model name directly
+            model_class = globals()[str(model_name)]
 
+            # Perform the query on the model class
+            email_check = model_class.objects.filter(email=email).exists()
+        
+            if email_check == True:
+                valid_breach_names.append(model_name)
+                print(f"Email found in {model_name}: {email_check}")
+        
+        return valid_breach_names
+
+    def construct_node_structure(self, email):
+        valid_breach_names = self.fetch_breachnames(email=str(email))
+
+        node_structure = {
+            "nodes": [],
+            "links": []
+        }
+
+        node_structure["nodes"].append({"id": str(email), "name": str(email), "type": "email"})
+        node_structure["links"].append({"source": str(email), "target": str(email), "value": 15})
+        
+        for idx, database in enumerate(valid_breach_names, start=1):
+            data = breachInfo.objects.filter(name=str(database.replace('Breach', ''))).values().first()
+            # Start deleing keys we don't need
+            if data:
+                data.pop('id', None)
+                data.pop('breach_id', None)
+                data['id'] = str(idx)
+                node_structure["nodes"].append(data)
+
+        for idx in range(1, len(node_structure["nodes"])):
+            node_structure["links"].append({"source": str(idx), "target": str(email), "value": 15})
+
+        return node_structure
+
+    def get(self, request, *args, **kwargs):
+        email = self.kwargs['email']
+        node_data = self.construct_node_structure(email=email)
+    
+        return JsonResponse(node_data, status=200)
+    
 @csrf_protect
 def contact_form(request):
     # Things to-do
     # Prevent spamming based on IP address
-    # 
+    # Change into class based
     if request.method == 'POST':
         data = json.loads(request.body)
         
