@@ -24,14 +24,15 @@ const Container = () => {
     })
     .then(response => {
       if (response.status === 200) {
-        
-        navigate('/result'); // redirect to /result
+        // Redirects to api call once we get a succesful message.
+        navigate('/result/' + email_text); // redirect to /result
       }
     })
     .catch(error => {
       if (error.response && error.response.status === 404) {
         alert(error.response.data.message);
       } else {
+        // Pop error message compo
         alert('An unexpected error occurred');
       }
     });
