@@ -4,10 +4,10 @@ import * as THREE from 'three';
 import SpriteText from 'three-spritetext';
 import ForceGraph3D from '3d-force-graph';
 import './interactive.css';
-
 // Import images
 import BreachImage from '../assets/breach.png';
 import EmailImage from '../assets/email.png';
+import { useParams } from 'react-router-dom';
 
 const ForceGraphComponent = () => {
   const containerRef = useRef(null);
@@ -15,16 +15,17 @@ const ForceGraphComponent = () => {
   const [nodeData, setNodeData] = useState({});
 
   const distance = 120;
-  
+  const { email } = useParams();
+
   useEffect(() => {
-    axios.get('/api/result/test')
+    axios.get('/api/result/' + email)
       .then(response => {
         creatingGraph(response.data);
       })
       .catch(error => {
         console.log(error);
       });
-  }, []);
+  }, [email]);
 
   const creatingGraph = (data) => {
     const Graph = ForceGraph3D()(containerRef.current)
