@@ -5,7 +5,7 @@ from .models import emailList, contactForm, breachInfo
 from .serializers import BreachInfoSerializer, EmailResultSerializer
 from rest_framework.generics import GenericAPIView
 from databreaches.models import AdobeBreach, SonyBreach
-import json
+import json, re
 
 class InfoBreach(GenericAPIView):
     queryset = breachInfo.objects.all()
@@ -17,16 +17,27 @@ class InfoBreach(GenericAPIView):
 
 class EmailSearch(GenericAPIView):
     serializer_class = EmailResultSerializer
+    def emailValidation(self, email):
+        pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+        if re.match(pattern, email):
+            return 'valid'
+        else:
+            return 'invalid'
 
     def get(self, request, *args, **kwargs):
-        name = self.kwargs['email']
+        # Perform email validation here too
+        email = self.kwargs['email'] # Perform email validation here too
+        validation_status = self.emailValidation(email=email)
         
-        email_exists = emailList.objects.filter(email=name).exists()
+        if validation_status == 'valid':
+            email_exists = emailList.objects.filter(email=email).exists()
 
-        if email_exists:
-            return JsonResponse({'message': f'Email {name} exists in the database.'})
-        else:
-            return JsonResponse({'message': f'Email {name} does not exist in the database.'}, status=404)
+            if email_exists:
+                return JsonResponse({'message': f'Email {email} exists in the database.'})
+            else:
+                return JsonResponse({'message': f'Email {email} does not exist in the database.'}, status=404)
+        elif validation_status == 'invalid':
+            return JsonResponse({'message': f'Invalid Email: {email} .'}, status=404)
 
 class FormatEmailResult(GenericAPIView):
     def fetch_breachnames(self, email):
