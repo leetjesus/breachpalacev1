@@ -1,13 +1,18 @@
 // components/Container.js
-import React from 'react';
+import React, { useState } from 'react';
 import './container.css'; // Import specific CSS for Container
 import axios from "axios";
 import { getCookie } from './getCookie.js';
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+import NoBreachContainer from './nobreachfoundPage.js'
 
 const Container = () => {
   const navigate = useNavigate();
   
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+
   function validateEmail(value) {  
     let error;
 
@@ -46,26 +51,41 @@ const Container = () => {
       })
       .catch(error => {
         if (error.response && error.response.status === 404) {
-          alert(error.response.data.message);
+          // Pop up success message here.
+          setShowSuccess(true)
         } else {
           // Pop error message compo
-          alert('An unexpected error occurred');
+          setShowAlert(true);
+          setTimeout(() => setShowAlert(false), 5000);
         }
       });
     } else if (emailStatus === '404'){
-      alert('Email was not found.')
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 5000);
     }
   }
 
   return (
     <div className="container">
       <h1>Welcome to Breach Palace</h1>
+      
+      {showAlert && (
+       <Alert severity="error">Invalid email format. Please try again.</Alert>
+      )}
+      <br/>
+      
       <div className="input-group">
         <input id='email' type="text" placeholder="Email address..." />
         <form onSubmit={onChange}>
           <button type="submit">Search</button>
         </form>
+        
+        <br/>
+        {showSuccess && (
+          <Alert severity="success">Congrats your email has not been found in a leak!.</Alert>
+        )}
       </div>
+      <NoBreachContainer />
     </div>
   );
 };
