@@ -1,0 +1,24 @@
+/* nobreachContainer.css */
+.nobreachContainer {
+    background-color: #33873a; 
+    border: 1px solid #33873a; 
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nobreachContainer h1 {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.nobreachContainer p {
+    color: #ffffff;
+    font-size: 16px;
+    margin: 5px 0;
+    line-height: 1.5;
+}
