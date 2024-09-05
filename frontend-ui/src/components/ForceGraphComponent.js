@@ -40,6 +40,18 @@ const ForceGraphComponent = () => {
       .linkDirectionalParticleWidth(1.5)
       .linkDirectionalParticleSpeed(0.004)
       .onNodeClick(node => {
+        if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(node.name)) {
+          document.getElementById("header-id").innerHTML = "Email Info";
+          document.getElementById("object-id").innerHTML = "Email: " + node.name; 
+          document.getElementById('date-id').style.visibility = 'hidden';
+          document.getElementById('description-id').style.visibility = 'hidden';
+        } else {
+          document.getElementById("header-id").innerHTML = "Data Breach Info";
+          document.getElementById("object-id").innerHTML = 'Data breach: ' + node.name;
+          document.getElementById('date-id').style.visibility = 'visible';
+          document.getElementById('description-id').style.visibility = 'visible';
+        }
+
         setNodeData({
           name: node.name,
           id: node.id,
@@ -75,7 +87,7 @@ const ForceGraphComponent = () => {
         });
 
         imageSprite.scale.set(10, 10, 1);
-
+        
         const textSprite = new SpriteText(node.name);
         textSprite.color = 'white';
         textSprite.textHeight = 2;
@@ -107,12 +119,11 @@ const ForceGraphComponent = () => {
 
   return (
     <div>
-      {/* This box needs to change based if it's the email being clicked or the databreach information */}
-      <div id="infoBox" className={infoBoxVisible ? 'visible' : ''}>
-        <h2>Data Breach Info</h2>
-        <p>Email: {nodeData.name}</p>
-        <p>Breach Date: { nodeData.breachdate}</p>
-        <p>Description: { nodeData.description}</p>
+      <div  id="infoBox" className={infoBoxVisible ? 'visible' : ''}>
+        <h2 id='header-id'>Data Breach Info</h2>
+        <p  id='object-id'>Email: </p>
+        <p  id='date-id'>Breach Date: { nodeData.breachdate}</p>
+        <p  id='description-id'>Description: { nodeData.description}</p>
       </div>
       <div id="container" ref={containerRef}></div>
     </div>
