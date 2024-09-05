@@ -71,7 +71,7 @@ const Container = () => {
       <br/>
       
       <div className="input-group">
-        <input id='email' type="text" placeholder="Email address..." />
+        <input id='email' type="email" placeholder="Email address..." />
         <form onSubmit={onChange}>
           <button type="submit">Search</button>
         </form>

@@ -24,7 +24,7 @@
     justify-content: center;
   }
   
-  .input-group input[type="text"] {
+  .input-group input[type="email"] {
     flex: 1;
     padding: 15px;
     font-size: 18px;
@@ -38,11 +38,11 @@
     max-width: 600px;
   }
   
-  .input-group input[type="text"]::placeholder {
+  .input-group input[type="email"]::placeholder {
     color: #ccc;
   }
   
-  .input-group input[type="text"]:focus {
+  .input-group input[type="email"]:focus {
     background-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   }
