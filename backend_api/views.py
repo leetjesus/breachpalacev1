@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from .models import emailList, contactForm, breachInfo
 from .serializers import BreachInfoSerializer, EmailResultSerializer
 from rest_framework.generics import GenericAPIView
-from databreaches.models import AdobeBreach, SonyBreach
+#from databreaches.models import AdobeBreach, SonyBreach
 import json, re
 
 class InfoBreach(GenericAPIView):
