@@ -1,6 +1,5 @@
 from .models import emailList, contactForm, breachInfo
 from django.contrib import admin
-from databreaches.models import breachExample
 
 # Register your models here.
 @admin.register(emailList)
