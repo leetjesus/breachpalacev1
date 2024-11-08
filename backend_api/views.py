@@ -42,9 +42,8 @@ class EmailSearch(GenericAPIView):
 class FormatEmailResult(GenericAPIView):
     def fetch_breachnames(self, email):
         valid_breach_names = []
-        #model_names = ['GetrevengeonyourexBreach', 'TicketiqBreach', 'PokemoncreedBreach', 'BellcanadaBreach', 'SonypicturesBreach', 'LatestpilotjobsBreach']
-        # temp for now
-        model_names = ['EmailhashtestBreach']
+        # Practice breach names these will be removed
+        model_names = ['EmailhashtestBreach', 'PokemoncreedBreach']
         
         for model_name in model_names:
             # Since the models are already imported, use the model name directly
@@ -61,7 +60,7 @@ class FormatEmailResult(GenericAPIView):
 
     def construct_node_structure(self, email):
         valid_breach_names = self.fetch_breachnames(email=str(email))
-
+        
         node_structure = {
             "nodes": [],
             "links": []
@@ -71,24 +70,22 @@ class FormatEmailResult(GenericAPIView):
         node_structure["links"].append({"source": str(email), "target": str(email), "value": 15})
         
         for idx, modelName in enumerate(valid_breach_names, start=1):
-            data = breachInfo.objects.filter(name=str(modelName.replace('Breach', ''))).values().first()
-
-            # Start deleing keys we don't need
+            data = breachInfo.objects.filter(name=str(modelName.replace('Breach', ''))).values().first()    
             if data:
                 model_name_instance = globals()[str(modelName)]
                 cred_data = model_name_instance.objects.filter(email=email)
-
+                
                 data.pop('id', None)
                 data.pop('breach_id', None)
                 data['id'] = str(idx)
+                
                 data['hashes'] = list(cred_data[0].hashes.split("-"))
-                data['line'] = cred_data[0].line
+                
                 node_structure["nodes"].append(data)
 
         for idx in range(1, len(node_structure["nodes"])):
             node_structure["links"].append({"source": str(idx), "target": str(email), "value": 15})
-
-        print(node_structure)
+                
         return node_structure
 
     def get(self, request, *args, **kwargs):
