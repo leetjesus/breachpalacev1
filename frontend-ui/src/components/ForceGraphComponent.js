@@ -16,10 +16,8 @@ const ForceGraphComponent = () => {
   const [nodeData, setNodeData] = useState({});
 
   const [showHashes, setShowHashes] = useState(false);
-  const [showLine, setShowLine] = useState(false);
 
   const toggleHashes = () => setShowHashes(!showHashes);
-  const toggleLine = () => setShowLine(!showLine);
 
   const distance = 120;
   const { email } = useParams();
@@ -61,27 +59,23 @@ const ForceGraphComponent = () => {
           document.getElementById('date-id').style.visibility = 'hidden';
           document.getElementById('description-id').style.visibility = 'hidden';
           document.getElementById('hashes-button').style.visibility = 'hidden';
-          document.getElementById('line-button').style.visibility = 'hidden';
         } else {
           setNodeData({
             name: node.name,
             id: node.id,
             breachdate: node.BreachDate,
             description: node.description,
-            hashes: node.hashes || [],
-            line: node.line
+            hashes: node.hashes || []
           });
           document.getElementById("header-id").innerHTML = 'Data Breach Info';
           document.getElementById("object-id").innerHTML = 'Data breach: ' + node.name;
           document.getElementById('date-id').style.visibility = 'visible';
           document.getElementById('description-id').style.visibility = 'visible';
           document.getElementById('hashes-button').style.visibility = 'visible';
-          document.getElementById('line-button').style.visibility = 'visible';
         }
 
         setInfoBoxVisible(true);
         setShowHashes(false);
-        setShowLine(false);
 
         const distance = 40;
         const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
@@ -163,11 +157,6 @@ const ForceGraphComponent = () => {
             {showHashes ? 'Hide Hashes' : 'Show Hashes'}
           </button>
   
-          {/* Button to show/hide the line */}
-          <button id='line-button' onClick={toggleLine}>
-            {showLine ? 'Hide Line' : 'Show Line'}
-          </button>
-  
           {showHashes && (
             <div id="hashes">
               <p>Hashes:</p>
@@ -175,15 +164,6 @@ const ForceGraphComponent = () => {
                 {nodeData.hashes.map((hash, index) => (
                   <li key={index}>{hash}</li>
                 ))}
-              </ul>
-            </div>
-          )}
-  
-          {showLine && (
-            <div id="hashes">
-              <p>Line:</p>
-              <ul>
-                <li>{nodeData.line}</li>
               </ul>
             </div>
           )}
