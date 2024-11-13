@@ -55,7 +55,7 @@ const ForceGraphComponent = () => {
             hashes: [],
           });
           document.getElementById("header-id").innerHTML = "Email Info";
-          document.getElementById("object-id").innerHTML = "Email: " + node.name; 
+          // document.getElementById("object-id").innerHTML = "Email: " + node.name; 
           document.getElementById('date-id').style.visibility = 'hidden';
           document.getElementById('description-id').style.visibility = 'hidden';
           document.getElementById('hashes-button').style.visibility = 'hidden';
