@@ -37,7 +37,7 @@ const ForceGraphComponent = () => {
       .graphData(data)
       .linkColor(() => 'white')
       .nodeColor(() => 'white')
-      .backgroundColor('#272727')
+      .backgroundColor('#121212')
       .enableNodeDrag(false)
       .enableNavigationControls(true)
       .cameraPosition({ z: distance })
