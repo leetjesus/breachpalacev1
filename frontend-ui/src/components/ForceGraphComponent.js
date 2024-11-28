@@ -55,7 +55,7 @@ const ForceGraphComponent = () => {
             hashes: [],
           });
           document.getElementById("header-id").innerHTML = "Email Info";
-          // document.getElementById("object-id").innerHTML = "Email: " + node.name; 
+          document.getElementById("object-id").innerHTML = "Email: " + node.name; 
           document.getElementById('date-id').style.visibility = 'hidden';
           document.getElementById('description-id').style.visibility = 'hidden';
           document.getElementById('hashes-button').style.visibility = 'hidden';
@@ -142,11 +142,11 @@ const ForceGraphComponent = () => {
     // Cleanup on unmount
     return (
       <div>
-        <div
-          id="infoBox"
-          ref={infoBoxRef}
-          className={infoBoxVisible ? 'visible' : ''}
-        >
+          <div
+            id="infoBox"
+            ref={infoBoxRef}
+            className={infoBoxVisible ? 'visible' : ''}
+          >
           <h2 id="header-id">Data Breach Info</h2>
           <p id="object-id">Email: {nodeData.id || ''}</p>
           <p id="date-id">Breach Date: {nodeData.breachdate}</p>
@@ -167,18 +167,18 @@ const ForceGraphComponent = () => {
               </ul>
             </div>
           )}
-  
-          {/* Resizer handle */}
-          <div
-            className="resizer"
+          <button
+            className="resize-arrow"
             onMouseDown={(e) => {
               e.preventDefault(); // Prevent text selection
               document.addEventListener('mousemove', handleResizeInfoBox);
               document.addEventListener('mouseup', () => {
-                document.removeEventListener('mousemove', handleResizeInfoBox);
-              }, { once: true });
-            }}
-          ></div>
+              document.removeEventListener('mousemove', handleResizeInfoBox);
+                }, { once: true });
+              }}
+              >
+            ❮
+        </button>
         </div>
         <div id="container" ref={containerRef}></div>
       </div>
