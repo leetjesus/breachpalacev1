@@ -27,7 +27,7 @@ const Background = () => {
       .showNavInfo(false)
       .nodeColor(() => 'white')
       .linkColor(() => 'white')
-      .backgroundColor('#000000')
+      .backgroundColor('#121212')
       .cameraPosition({ z: distance })
       .graphData(gData);
 
