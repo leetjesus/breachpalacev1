@@ -20,13 +20,13 @@ h2, p{
 }
 
 #infoBox {
+  padding: 45px;
   position: fixed;
   top: 20;
   left: 0;
-  width: 25%; 
+  width: 30%; 
   height: 100%;
   background: rgba(51, 51, 51, 0.9);
-  padding: 20px;
   border: 1px solid #000;
   border-radius: 0 5px 5px 0; 
   box-sizing: border-box;
@@ -36,16 +36,9 @@ h2, p{
   resize: horizontal; 
   overflow: auto; 
 }
-  
-.resize-handle {
-  width: 10px; 
-  cursor: ew-resize; 
-  height: 100%; 
-  background-color: rgba(255, 255, 255, 0.5);
-  position: absolute;
-  top: 0;
-  right: -5px;
-  z-index: 2;
+
+#infoBox::-webkit-scrollbar {
+  display: none; 
 }
 
 #infoBox.visible {
@@ -54,14 +47,26 @@ h2, p{
   transform: translateX(0); 
 }
 
-.resizer {
-  width: 5px; 
-  background: #666; 
+.resize-arrow {
+  width: 10px;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  color: #000;
+  font-size: 10px;
   cursor: ew-resize;
   position: absolute;
   top: 0;
-  right: 0; 
-  height: 100%;
+  right: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 2px 2px 0;
+  transition: background-color 0.2s ease;
+}
+
+.resize-arrow:hover {
+  background-color: rgba(255, 255, 255, 1);
 }
 
 button {
@@ -72,29 +77,42 @@ button {
   padding: 10px 20px;
   cursor: pointer;
   font-size: 16px;
-  margin-top: 10px;
   width: 100%;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 button:hover {
-    background-color: #555;
-    color: #ddd;
+  background-color: #555;
+  color: #ddd;
 }
 
 #hashes {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
 }
 
 #hashes ul {
-    list-style-type: none;
-    padding: 0;
+  list-style-type: none;
+  padding: 0;
 }
 
 #hashes li {
-    color: #ccc;
-    margin-bottom: 5px;
+  color: #ccc;
+  margin-bottom: 5px;
+}
+
+.resizer {
+  width: 5px;
+  cursor: ew-resize;
+  height: 100%;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
