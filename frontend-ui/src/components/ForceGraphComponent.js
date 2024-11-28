@@ -46,7 +46,9 @@ const ForceGraphComponent = () => {
       .linkDirectionalParticleSpeed(0.004)
       .onNodeClick(node => {
         // Update info based on node clicked
+        // Regex checks for an email
         if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(node.name)) {
+          // Setting data for email information
           setNodeData({
             name: node.name,
             id: node.id,
@@ -59,7 +61,9 @@ const ForceGraphComponent = () => {
           document.getElementById('date-id').style.visibility = 'hidden';
           document.getElementById('description-id').style.visibility = 'hidden';
           document.getElementById('hashes-button').style.visibility = 'hidden';
-        } else {
+        } 
+        else {
+          // Setting data for Data breach infomration
           setNodeData({
             name: node.name,
             id: node.id,
@@ -148,7 +152,7 @@ const ForceGraphComponent = () => {
             className={infoBoxVisible ? 'visible' : ''}
           >
           <h2 id="header-id">Data Breach Info</h2>
-          <p id="object-id">Email: {nodeData.id || ''}</p>
+          <p id="object-id">Email:</p>
           <p id="date-id">Breach Date: {nodeData.breachdate}</p>
           <p id="description-id">Description: {nodeData.description}</p>
   
