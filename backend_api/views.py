@@ -42,9 +42,11 @@ class EmailSearch(GenericAPIView):
 class FormatEmailResult(GenericAPIView):
     def fetch_breachnames(self, email):
         valid_breach_names = []
-        # Practice breach names these will be removed
-        model_names = ['EmailhashtestBreach', 'PokemoncreedBreach']
-        
+        # Model names will be hard coded for back-end reasons
+        model_names = ['HelloWorldBreach', 'PokemoncreedBreach']
+
+        # Is there a better way of doing this?
+        # Instead of using a for loop. Wouldn't this cause a lot of drag on the system?
         for model_name in model_names:
             # Since the models are already imported, use the model name directly
             model_class = globals()[str(model_name)]
@@ -54,16 +56,25 @@ class FormatEmailResult(GenericAPIView):
         
             if email_check == True:
                 valid_breach_names.append(model_name)
-                print(f"Email found in {model_name}: {email_check}")
         
-        return valid_breach_names
+        return valid_breach_names 
+
+    def structure_email_information(self, email, breach_information):
+        found_breach_number = len(breach_information)
+        breach_names = ", ".join(breach_information)
+
+        return f'The following email {email} was found within {found_breach_number} databreach(s). This includes the following: {breach_names}'
 
     def construct_node_structure(self, email):
         valid_breach_names = self.fetch_breachnames(email=str(email))
         
+        email_info = self.structure_email_information(breach_information=valid_breach_names, email=str(email))
+
+
         node_structure = {
             "nodes": [],
-            "links": []
+            "links": [],
+            "email_info": email_info,
         }
 
         node_structure["nodes"].append({"id": str(email), "name": str(email), "type": "email"})
@@ -78,14 +89,18 @@ class FormatEmailResult(GenericAPIView):
                 data.pop('id', None)
                 data.pop('breach_id', None)
                 data['id'] = str(idx)
-                
-                data['hashes'] = list(cred_data[0].hashes.split("-"))
+
+                try:
+                    data['hashes'] = list(cred_data[0].hashes.split("-"))
+                except AttributeError:
+                    pass
                 
                 node_structure["nodes"].append(data)
 
         for idx in range(1, len(node_structure["nodes"])):
             node_structure["links"].append({"source": str(idx), "target": str(email), "value": 15})
-                
+        
+        print(node_structure)
         return node_structure
 
     def get(self, request, *args, **kwargs):
@@ -105,11 +120,6 @@ def contact_form(request):
         name = data.get('name')
         email = data.get('email')
         message = data.get('message')
-        
-        # Print data terminal
-        # print(f"Name: {name}")
-        # print(f"Email: {email}")
-        # print(f"Message: {message}")
         
         verify_email = contactForm.objects.filter(email=email).exists()
 
