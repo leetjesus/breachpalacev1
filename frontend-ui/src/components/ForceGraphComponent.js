@@ -23,8 +23,10 @@ const ForceGraphComponent = () => {
   const { email } = useParams();
 
   useEffect(() => {
+    // Handle the GET response here
     axios.get('/api/result/' + email)
       .then(response => {
+        // Create the graph here if the response is valid 
         creatingGraph(response.data);
       })
       .catch(error => {
@@ -49,6 +51,7 @@ const ForceGraphComponent = () => {
         // Regex checks for an email
         if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(node.name)) {
           // Setting data for email information
+          const email_description = data.email_info
           setNodeData({
             name: node.name,
             id: node.id,
@@ -57,8 +60,8 @@ const ForceGraphComponent = () => {
             hashes: [],
           });
           document.getElementById("header-id").innerHTML = "Email Info";
-          document.getElementById("object-id").innerHTML = "Email: " + node.name; 
-          document.getElementById('date-id').style.visibility = 'hidden';
+          document.getElementById("object-id").innerHTML = "Email: " + node.name;
+          document.getElementById('date-id').innerHTML = "Description: " + email_description;
           document.getElementById('description-id').style.visibility = 'hidden';
           document.getElementById('hashes-button').style.visibility = 'hidden';
         } 
@@ -73,8 +76,9 @@ const ForceGraphComponent = () => {
           });
           document.getElementById("header-id").innerHTML = 'Data Breach Info';
           document.getElementById("object-id").innerHTML = 'Data breach: ' + node.name;
-          document.getElementById('date-id').style.visibility = 'visible';
+          document.getElementById('date-id').innerHTML = 'Breach Date: ' + node.BreachDate;
           document.getElementById('description-id').style.visibility = 'visible';
+          document.getElementById('description-id').innerHTML = 'Description: ' + node.description;
           document.getElementById('hashes-button').style.visibility = 'visible';
         }
 
@@ -153,8 +157,8 @@ const ForceGraphComponent = () => {
           >
           <h2 id="header-id">Data Breach Info</h2>
           <p id="object-id">Email:</p>
-          <p id="date-id">Breach Date: {nodeData.breachdate}</p>
-          <p id="description-id">Description: {nodeData.description}</p>
+          <p id="date-id">Breach Date:</p>
+          <p id="description-id">Description:</p>
   
           {/* Dropdown button to show/hide hashes */}
           <button id='hashes-button' onClick={toggleHashes}>
